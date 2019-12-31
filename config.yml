@@ -1,0 +1,42 @@
+Config: 
+  Animations: 
+    Refresh-Delay: 2
+    Rainbow-Delay: 10
+    Title-Delay: 2
+  Disabled-Worlds: 
+    - ExampleWorld
+    - ExampleWorld2
+  Scoreboard: 
+    world: 
+      Lines: 
+        - "&8%rainbow%&l&m------------------------"
+        - "&7Name: &f%playername% &8/ &f%ping%"
+        - "&7Money: &f%money%"
+        - "&1"
+        - "&7Time: &f%time%"
+        - "&7Day: &f%day%"
+        - "&7Location: &f%loc%"
+        - "&9"
+        - "&7Kills: &f%kills% &8- &7Deaths: &f%deaths%"
+        - "&7K/D: &f%kd%"
+        - "&2"
+        - "&7Port: &f%port%"
+        - "&7Ram: &f%ram% &8/ &7Tps: &f%tps%"
+        - "&7Online: &a%online%&2/&a%maxplayers%"
+        - "%rainbow%&l&m------------------------"
+      Title: 
+        - "%rainbow%RealScoreBoard"
+    ABC: 
+      Lines: 
+        - "&8%rainbow%&l&m------------------------"
+        - "&7Second scoreboard"
+        - "%rainbow%&l&m------------------------"
+      Title: 
+        - "&6This is the second scoreboard."
+    Test: 
+      Lines: 
+        - "&8%rainbow%&l&m------------------------"
+        - "&7Third scoreboard"
+        - "%rainbow%&l&m------------------------"
+      Title: 
+        - "&6This is the Third scoreboard."
