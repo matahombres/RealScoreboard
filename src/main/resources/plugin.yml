@@ -1,0 +1,11 @@
+name: RealScoreboard
+description: Lightweight and efficient scoreboard manager.
+author: JoseGamer_PT
+version: ${project.version}
+main: josegamerpt.realscoreboard.RealScoreboard
+softdepend: [Vault, PlaceholderAPI]
+
+commands:
+  realscoreboard:
+    description: Main command.
+    aliases: [rsb, scoreboard, sb]
