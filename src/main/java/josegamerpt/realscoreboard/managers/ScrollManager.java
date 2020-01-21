@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 
-public class Scroller {
+public class ScrollManager {
     private int position;
     private List<String> list;
     private ChatColor colour;
 
-    public Scroller(String message, int width, int spaceBetween, final char colourChar) {
+    public ScrollManager(String message, int width, int spaceBetween, final char colourChar) {
         this.colour = ChatColor.RESET;
         this.list = new ArrayList<String>();
         if (message.length() < width) {
@@ -35,16 +35,16 @@ public class Scroller {
         }
         final StringBuilder space = new StringBuilder();
         for (int j = 0; j < spaceBetween; ++j) {
-            this.list.add(String.valueOf(message.substring(message.length() - width + ((j > width) ? width : j), message.length())) + (Object) space);
+            this.list.add(message.substring(message.length() - width + ((j > width) ? width : j)) + space);
             if (space.length() < width) {
                 space.append(" ");
             }
         }
         for (int j = 0; j < width - spaceBetween; ++j) {
-            this.list.add(String.valueOf(message.substring(message.length() - width + spaceBetween + j, message.length())) + (Object) space + message.substring(0, j));
+            this.list.add(message.substring(message.length() - width + spaceBetween + j) + space + message.substring(0, j));
         }
         for (int j = 0; j < spaceBetween && j <= space.length(); ++j) {
-            this.list.add(String.valueOf(space.substring(0, space.length() - j)) + message.substring(0, width - ((spaceBetween > width) ? width : spaceBetween) + j));
+            this.list.add(space.substring(0, space.length() - j) + message.substring(0, width - ((spaceBetween > width) ? width : spaceBetween) + j));
         }
     }
 

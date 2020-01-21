@@ -1,13 +1,14 @@
 package josegamerpt.realscoreboard.managers;
 
-import josegamerpt.realscoreboard.Data;
+import josegamerpt.realscoreboard.Enum;
+import josegamerpt.realscoreboard.config.Data;
 import josegamerpt.realscoreboard.RealScoreboard;
 import josegamerpt.realscoreboard.utils.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class AnimationSheduler {
+public class AnimationManager {
     public static void startAnimations() {
         IniciarTitulo();
         IniciarRainbow();
@@ -17,10 +18,10 @@ public class AnimationSheduler {
         new BukkitRunnable() {
             public void run() {
                 for (Player p : Bukkit.getOnlinePlayers()) {
-                    Title.startAnimation(p);
+                    TitleManager.startAnimation(p);
                 }
             }
-        }.runTaskTimer(RealScoreboard.pl, 0L, (long) Data.getTimes(1));
+        }.runTaskTimer(RealScoreboard.pl, 0L, (long) Data.getInt(Enum.DataInt.ANIMATIONS_TITLE_DELAY));
     }
 
     public static void IniciarRainbow() {
@@ -28,6 +29,6 @@ public class AnimationSheduler {
             public void run() {
                 Text.startAnimation();
             }
-        }.runTaskTimer(RealScoreboard.pl, 0L, (long) Data.getTimes(2));
+        }.runTaskTimer(RealScoreboard.pl, 0L, (long) Data.getInt(Enum.DataInt.ANIMATIONS_RAINBOW_DELAY));
     }
 }

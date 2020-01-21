@@ -32,7 +32,7 @@ public class Placeholders {
 			Runtime re = Runtime.getRuntime();
 			int mbnumero = 1048576;
 			return (re.totalMemory() - re.freeMemory()) / mbnumero + "MB";
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return stringerror;
 	}
@@ -40,7 +40,7 @@ public class Placeholders {
 	private static int port() {
 		try {
 			return Bukkit.getPort();
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return interror;
 	}
@@ -52,7 +52,7 @@ public class Placeholders {
 				return "null";
 			}
 			return s;
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return stringerror;
 	}
@@ -61,16 +61,11 @@ public class Placeholders {
 		try {
 			DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 			Date date = new Date();
-			String data = String.valueOf(dateFormat.format(date));
-			if (data == null) {
-				return "null";
-			}
-			return data;
+			return dateFormat.format(date);
 		} catch (Exception e) {
 			DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 			Date date = new Date();
-			String data = String.valueOf(dateFormat.format(date));
-			return data;
+			return dateFormat.format(date);
 		}
 	}
 
@@ -78,12 +73,8 @@ public class Placeholders {
 		try {
 			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			Date date = new Date();
-			String data = String.valueOf(dateFormat.format(date));
-			if (data == null) {
-				return "null";
-			}
-			return data;
-		} catch (Exception e) {
+			return dateFormat.format(date);
+		} catch (Exception ignored) {
 		}
 		return stringerror;
 	}
@@ -92,7 +83,7 @@ public class Placeholders {
 		try {
 			return "X: " + player.getLocation().getBlockX() + " Y: " + player.getLocation().getBlockY() + " Z: "
 					+ player.getLocation().getBlockZ();
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return "Error.";
 	}
@@ -100,7 +91,7 @@ public class Placeholders {
 	private static int onlinePlayers() {
 		try {
 			return Bukkit.getOnlinePlayers().size();
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return interror;
 	}
@@ -108,7 +99,7 @@ public class Placeholders {
 	private static int maxPlayers() {
 		try {
 			return Bukkit.getMaxPlayers();
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return interror;
 	}
@@ -126,7 +117,7 @@ public class Placeholders {
 				return "null";
 			}
 			return ip;
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return stringerror;
 	}
@@ -138,7 +129,7 @@ public class Placeholders {
 				return "null";
 			}
 			return s;
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return stringerror;
 	}
@@ -150,7 +141,7 @@ public class Placeholders {
 				return "null";
 			}
 			return w;
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return stringerror;
 	}
@@ -169,7 +160,7 @@ public class Placeholders {
 			} catch (Exception e) {
 				return "Vault Not-Found";
 			}
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return stringerror;
 	}
@@ -192,7 +183,7 @@ public class Placeholders {
 			} catch (Exception e) {
 				return "Vault Not-Found";
 			}
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return stringerror;
 	}
@@ -215,7 +206,7 @@ public class Placeholders {
 			} catch (Exception e) {
 				return "Vault Not-Found";
 			}
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return stringerror;
 	}
@@ -227,7 +218,7 @@ public class Placeholders {
 			}
 			String kept = String.valueOf(RealScoreboard.Economia.getBalance(p));
 			return kept.substring(0, kept.indexOf("."));
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return "0";
 	}
@@ -243,19 +234,19 @@ public class Placeholders {
 			} else if (i == 3) {
 				return p.getStatistic(Statistic.MOB_KILLS);
 			}
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return 0;
 	}
 
-	private static double getKD(Player p) {
+	private static String getKD(Player p) {
 		try {
 			double kills = p.getStatistic(Statistic.PLAYER_KILLS);
 			double deaths = p.getStatistic(Statistic.DEATHS);
-			return kills / deaths;
-		} catch (Exception e) {
+			return (kills / deaths + "").substring(0, 4);
+		} catch (Exception ignored) {
 		}
-		return 0.0D;
+		return stringerror;
 	}
 
 	private static String placeholderAPI(Player p, String s) {
@@ -268,7 +259,7 @@ public class Placeholders {
 				return "null";
 			}
 			return s1;
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return stringerror;
 	}
@@ -278,7 +269,7 @@ public class Placeholders {
 			String placeholders = s.replaceAll("&", "§").replaceAll("%playername%", p.getName())
 					.replace("%loc%", cords(p)).replace("%rainbow%", Text.getRainbow()).replace("%time%", time())
 					.replace("%day%", day()).replace("%serverip%", serverIP()).replace("%version%", getVersion())
-					.replace("%ping%", String.valueOf(ping(p) + " ms")).replace("%ram%", ram())
+					.replace("%ping%", ping(p) + " ms").replace("%ram%", ram())
 					.replace("%jumps%", "" + stats(p, 2)).replace("%mobkills%", "" + stats(p, 3))
 					.replace("%world%", getWorldName(p)).replace("%port%", String.valueOf(port()))
 					.replace("%maxplayers%", String.valueOf(maxPlayers()))
@@ -286,12 +277,12 @@ public class Placeholders {
 					.replace("%playerip%", String.valueOf(getIP(p))).replace("%prefix%", prefix(p))
 					.replace("%suffix%", sufix(p)).replace("%yaw%", String.valueOf(p.getLocation().getYaw()))
 					.replace("%kills%", String.valueOf(stats(p, 0))).replace("%deaths%", String.valueOf(stats(p, 1)))
-					.replace("%kd%", String.valueOf(getKD(p)))
+					.replace("%kd%", getKD(p))
 					.replace("%pitch%", String.valueOf(p.getLocation().getPitch())).replace("%group%", getGroup(p))
-					.replace("%tps%", TPS.pegarTps()).replace("%money%", String.valueOf(money(p)))
+					.replace("%tps%", TPS.pegarTps()).replace("%money%", money(p))
 					.replace("%displayname%", p.getDisplayName());
 			return placeholderAPI(p, placeholders);
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return stringerror;
 	}

@@ -3,6 +3,10 @@ package josegamerpt.realscoreboard;
 import java.util.Arrays;
 import java.util.List;
 
+import josegamerpt.realscoreboard.config.Config;
+import josegamerpt.realscoreboard.config.Data;
+import josegamerpt.realscoreboard.managers.PlayerManager;
+import josegamerpt.realscoreboard.player.SBPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,13 +46,8 @@ public class RSBcmd implements CommandExecutor {
                         }
                         return false;
                     } else if (args[0].equals("toggle")) {
-                        if (p.hasMetadata("toggle")) {
-                            p.removeMetadata("toggle", RealScoreboard.pl);
-                            p.sendMessage(Text.addColor(RealScoreboard.getPrefix() + "&fScoreboard turned &aon."));
-                        } else {
-                            p.setMetadata("toggle", new FixedMetadataValue(RealScoreboard.pl, 0));
-                            p.sendMessage(Text.addColor(RealScoreboard.getPrefix() + "&fScoreboard turned &coff."));
-                        }
+                        SBPlayer s = PlayerManager.getPlayer(p);
+                        s.toggleScoreboard();
                     } else {
                         p.sendMessage(notfound);
                     }
@@ -106,8 +105,7 @@ public class RSBcmd implements CommandExecutor {
     }
 
     protected void processReload(Player p) {
-        Configuration.reload();
-        Data.init();
+        Config.reload();
 
         p.sendMessage(Text.addColor(RealScoreboard.getPrefix() + "&fConfig &areloaded."));
     }
@@ -115,7 +113,7 @@ public class RSBcmd implements CommandExecutor {
     protected void processConfigShow1(Player p) {
         p.sendMessage(Text.addColor("&7&m----------&r &aConfig &7&m----------"));
         p.sendMessage(Text.addColor("&9Disabled Worlds:"));
-        List<String> l = Data.getDataList("Config.Disabled-Worlds");
+        List<String> l = Data.getList(Enum.DataList.CONFIG_DISABLED_WORLDS);
         ;
         for (String s : l) {
             p.sendMessage(Text.addColor(" &8- &b" + s));
@@ -123,13 +121,13 @@ public class RSBcmd implements CommandExecutor {
         p.sendMessage("");
         p.sendMessage(Text.addColor("&9Animations:"));
         p.sendMessage(Text.addColor(" &bRainbow Delay (In Ticks): ")
-                + Text.addColor("&f" + Data.getData("Config.Animations.Rainbow-Delay")));
+                + Text.addColor("&f" + Data.getInt(Enum.DataInt.ANIMATIONS_RAINBOW_DELAY)));
         p.sendMessage(Text.addColor(" &bTitle Delay (In Ticks): ")
-                + Text.addColor("&f" + Data.getData("Config.Animations.Title-Delay")));
+                + Text.addColor("&f" + Data.getInt(Enum.DataInt.ANIMATIONS_TITLE_DELAY)));
         p.sendMessage("");
         p.sendMessage(Text.addColor("&9Scoreboard:"));
         p.sendMessage(Text.addColor(" &bRefresh Delay (In Ticks): ")
-                + Text.addColor("&f" + Data.getData("Config.Animations.Refresh-Delay")));
+                + Text.addColor("&f" + Data.getInt(Enum.DataInt.ANIMATIONS_REFRESH_DELAY)));
         p.sendMessage("");
         p.sendMessage(
                 Text.addColor("&9There are &b" + Data.getRegisteredWorlds().size() + " &9scoreboards registered."));

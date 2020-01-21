@@ -1,6 +1,6 @@
 Config:
+  Scoreboard-Refresh: 2
   Animations:
-    Refresh-Delay: 2
     Rainbow-Delay: 10
     Title-Delay: 2
   Disabled-Worlds:
@@ -26,14 +26,14 @@ Config:
         - "%rainbow%&l&m------------------------"
       Title:
         - "%rainbow%RealScoreBoard"
-    ABC:
+    world2:
       Lines:
         - "&8%rainbow%&l&m------------------------"
         - "&7Second scoreboard"
         - "%rainbow%&l&m------------------------"
       Title:
         - "&6This is the second scoreboard."
-    Test:
+    world3:
       Lines:
         - "&8%rainbow%&l&m------------------------"
         - "&7Third scoreboard"

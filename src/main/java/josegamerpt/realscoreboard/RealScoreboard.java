@@ -4,14 +4,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-import josegamerpt.realscoreboard.managers.AnimationSheduler;
-import josegamerpt.realscoreboard.managers.Scoreboard;
+import josegamerpt.realscoreboard.config.Config;
+import josegamerpt.realscoreboard.managers.AnimationManager;
+import josegamerpt.realscoreboard.managers.PlayerManager;
 import josegamerpt.realscoreboard.nms.*;
 import josegamerpt.realscoreboard.utils.TPS;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -57,18 +59,19 @@ public class RealScoreboard extends JavaPlugin {
 
                 log.info(name + "Setting up the configuration.");
                 saveDefaultConfig();
-                Configuration.setup(this);
-                Data.init();
+                Config.setup(this);
 
                 log.info(name + "Registering Events.");
-                pm.registerEvents(new WorldEvents(), this);
+                pm.registerEvents(new PlayerManager(), this);
 
                 log.info(name + "Registering Commands.");
                 getCommand("realscoreboard").setExecutor(new RSBcmd());
 
                 log.info(name + "Starting up the Scoreboard.");
-                Scoreboard.update();
-                AnimationSheduler.startAnimations();
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    PlayerManager.loadPlayer(p);
+                }
+                AnimationManager.startAnimations();
 
                 Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new TPS(), 100L, 1L);
 

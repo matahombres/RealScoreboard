@@ -1,4 +1,4 @@
-package josegamerpt.realscoreboard;
+package josegamerpt.realscoreboard.config;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,13 +11,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
-public class Configuration implements Listener {
-    static Configuration instance = new Configuration();
+public class Config implements Listener {
+    static Config instance = new Config();
     static FileConfiguration data;
     static File dfile;
     Plugin p;
 
-    public static Configuration getInstance() {
+    public static Config getInstance() {
         return instance;
     }
 
@@ -32,7 +32,7 @@ public class Configuration implements Listener {
         data = YamlConfiguration.loadConfiguration(dfile);
     }
 
-    public static FileConfiguration ficheiro() {
+    public static FileConfiguration file() {
         return data;
     }
 
