@@ -1,11 +1,14 @@
-package josegamerpt.realscoreboard.player;
+package josegamerpt.realscoreboard.scoreboard;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import josegamerpt.realscoreboard.Enum;
 import josegamerpt.realscoreboard.RealScoreboard;
+import josegamerpt.realscoreboard.config.Config;
 import josegamerpt.realscoreboard.config.Data;
+import josegamerpt.realscoreboard.managers.TitleManager;
+import josegamerpt.realscoreboard.utils.Placeholders;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -250,13 +253,5 @@ public class PlayerScoreboard {
         } catch (Throwable t) { // Fallback if fail
             return Bukkit.getOfflinePlayer(name);
         }
-    }
-
-    public void refresh(Player p) {
-        task = new BukkitRunnable() {
-            public void run() {
-                send(p);
-            }
-        }.runTaskTimer(RealScoreboard.pl, 0L, (long) Data.getInt(Enum.DataInt.ANIMATIONS_REFRESH_DELAY));
     }
 }

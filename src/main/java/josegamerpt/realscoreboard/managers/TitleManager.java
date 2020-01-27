@@ -27,11 +27,11 @@ public class TitleManager {
             ++TitleManager.i;
 
         } catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
+            ex.printStackTrace();
+        }
+    }
 
-	public static String getTitleAnimation(final Player p) {
+    public static String getTitleAnimation(Player p) {
         return Placeholders.setPlaceHolders(p, TitleManager.texto.get(p.getName()));
     }
 }

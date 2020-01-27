@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import josegamerpt.realscoreboard.config.Config;
+import josegamerpt.realscoreboard.config.ConfigUpdater;
 import josegamerpt.realscoreboard.managers.AnimationManager;
 import josegamerpt.realscoreboard.managers.PlayerManager;
 import josegamerpt.realscoreboard.nms.*;
@@ -35,142 +36,128 @@ public class RealScoreboard extends JavaPlugin {
     static String prefix = "§bReal§9Scoreboard §7| §r";
     PluginDescriptionFile desc = getDescription();
     PluginManager pm = Bukkit.getPluginManager();
-    String name = "[" + this.desc.getName() + "] ";
+    static String name = "[ RealScoreboard ]";
+    String sv;
+    String header = "------------------- RealScoreboard -------------------";
 
     public static String getPrefix() {
         return prefix;
     }
 
+    public static void log(String s) {
+        System.out.print(s);
+    }
+
+    public static void logPrefix(String s) {
+        System.out.print(name + " " + s);
+    }
+
+    public static String getServerVersion() {
+        String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+        return version;
+    }
+
     public void onEnable() {
+        pl = this;
 
-        try {
-            pl = this;
-            log.info(name + "Checking the server version.");
-            if (setupNMS()) {
-                if (Bukkit.getPluginManager().isPluginEnabled("Vault")) {
-                    vault = 1;
-                    setupEconomy();
-                    setupPermissions();
-                    setupChat();
-                }
-                if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-                    placeholderapi = 1;
-                }
+        System.out.print(header);
 
-                log.info(name + "Setting up the configuration.");
-                saveDefaultConfig();
-                Config.setup(this);
+        log("Checking the server version.");
+        if (setupNMS()) {
+            sv = getServerVersion();
 
-                log.info(name + "Registering Events.");
-                pm.registerEvents(new PlayerManager(), this);
-
-                log.info(name + "Registering Commands.");
-                getCommand("realscoreboard").setExecutor(new RSBcmd());
-
-                log.info(name + "Starting up the Scoreboard.");
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    PlayerManager.loadPlayer(p);
-                }
-                AnimationManager.startAnimations();
-
-                Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new TPS(), 100L, 1L);
-
-                status(Arrays.asList("RealScoreboard loaded sucessfully.", "", "Server version: " + pegarVersao(),
-                        "Configuration: OK", "Events: OK", "Commands: OK", "Scoreboard: OK"));
-            } else {
-                status(Arrays.asList("Failed to initialize RealScoreboard.",
-                        "Your server version (" + pegarVersao() + ") is not compatible with RealScoreboard.",
-                        "If you think this is a bug, please contact JoseGamer_PT.", "https://www.spigotmc.org/members/josegamer_pt.40267/"));
-
-                HandlerList.unregisterAll();
-
-                Bukkit.getPluginManager().disablePlugin(this);
+            if (Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+                String sv = getServerVersion();
+                vault = 1;
+                setupEconomy();
+                setupPermissions();
+                setupChat();
             }
-        } catch (Exception ex) {
-            status(Arrays.asList("A fatal error has ocourred.",
-                    "Delete your config.yml. If that doesn't help, please contact JoseGamer_PT (https://www.spigotmc.org/members/josegamer_pt.40267/)", "", ex.toString()));
-            ex.printStackTrace();
-        }
+            if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+                placeholderapi = 1;
+            }
 
+            log("Setting up the configuration.");
+            saveDefaultConfig();
+            Config.setup(this);
+            log("Your config version is: " + ConfigUpdater.getConfigVersion());
+            ConfigUpdater.updateConfig(ConfigUpdater.getConfigVersion());
+
+            log("Registering Events.");
+            pm.registerEvents(new PlayerManager(), this);
+
+            log("Registering Commands.");
+            getCommand("realscoreboard").setExecutor(new RSBcmd());
+
+            log("Starting up the Scoreboard.");
+            AnimationManager.startAnimations();
+
+            Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new TPS(), 100L, 1L);
+
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                PlayerManager.loadPlayer(p);
+            }
+
+            logList(Arrays.asList("Loaded sucessfully.", "Server version: " + sv,
+                    "If you have any questions or need support, feel free to message JoseGamer_PT", "https://www.spigotmc.org/members/josegamer_pt.40267/"));
+
+            System.out.print(header);
+        } else {
+            logList(Arrays.asList("Failed to load RealScoreboard.",
+                    "Your server version (" + sv + ") is not compatible with RealScoreboard.",
+                    "If you think this is a bug, please contact JoseGamer_PT.", "https://www.spigotmc.org/members/josegamer_pt.40267/"));
+            System.out.print("");
+            System.out.print(header);
+
+            HandlerList.unregisterAll();
+
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
     }
 
     private boolean setupNMS() {
         String versao;
-        String compatible = name + "Your server is compatible with RealScoreboard.";
 
         try {
             versao = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
         } catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
             return false;
         }
-        log.info(name + "Your server version is: " + versao);
-        if (versao.equals("v1_13_R2")) {
-            log.info(compatible);
-            nms = new NMS1_13_R2();
-        } else if (versao.equals("v1_9_R1")) {
-            log.info(compatible);
-            nms = new NMS1_9_R1();
-        } else if (versao.equals("v1_11_R1")) {
-            log.info(compatible);
-            nms = new NMS1_11_R1();
-        } else if (versao.equals("v1_11_R2")) {
-            log.info(compatible);
-            nms = new NMS1_11_R1();
-        } else if (versao.equals("v1_12_R2")) {
-            log.info(compatible);
-            nms = new NMS1_12_R1();
-        } else if (versao.equals("v1_12_R1")) {
-            log.info(compatible);
-            nms = new NMS1_12_R1();
-        } else if (versao.equals("v1_9_R1")) {
-            log.info(compatible);
-            nms = new NMS1_9_R1();
-        } else if (versao.equals("v1_13_R1")) {
-            log.info(compatible);
-            nms = new NMS1_13_R1();
-        } else if (versao.equals("v1_13_R2")) {
-            log.info(compatible);
-            nms = new NMS1_13_R2();
-        } else if (versao.equals("v1_15_R1")) {
-            log.info(compatible);
-            nms = new NMS1_15_R1();
-        } else if (versao.equals("v1_8_R3")) {
-            log.info(compatible);
-            nms = new NMS1_8_R3();
-        } else if (versao.equals("v1_8_R1")) {
-            log.info(compatible);
-            nms = new NMS1_8_R1();
-        } else if (versao.equals("v1_10_R1")) {
-            log.info(compatible);
-            nms = new NMS1_10_R1();
-        } else if (versao.equals("v1_14_R1")) {
-            log.info(compatible);
-            nms = new NMS1_14_R1();
-        } else if (versao.equals("v1_14_R4")) {
-            log.info(compatible);
-            nms = new NMS1_14_R1();
-        }
 
+        String compatible = "Your server is compatible with RealScoreboard!";
+        switch (versao) {
+            case "v1_13_R1":
+                log(compatible);
+                nms = new NMS1_13_R1();
+                break;
+            case "v1_13_R2":
+                log(compatible);
+                nms = new NMS1_13_R2();
+                break;
+            case "v1_14_R1":
+                log(compatible);
+                nms = new NMS1_14_R1();
+                break;
+            case "v1_14_R2":
+                log(compatible);
+                nms = new NMS1_14_R1();
+                break;
+            case "v1_15_R1":
+                log(compatible);
+                nms = new NMS1_15_R1();
+                break;
+            default:
+                //not compatible
+                break;
+        }
 
         return nms != null;
     }
 
-    protected void status(List<String> l) {
-        log.info("----------------------------------");
-        log.info("");
-        log.info(this.desc.getName());
-        log.info("Version: " + this.desc.getVersion());
-        log.info("");
+    protected void logList(List<String> l) {
         for (String s : l) {
-            log.info(s);
+            log(s);
         }
-        log.info("");
-        log.info("----------------------------------");
-    }
-
-    protected String pegarVersao() {
-        String versao = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-        return versao;
     }
 
     // Vault

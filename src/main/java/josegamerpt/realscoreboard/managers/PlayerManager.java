@@ -34,13 +34,24 @@ public class PlayerManager implements Listener {
     }
 
 
+    private static void unloadPlayer(SBPlayer sb) {
+        players.remove(sb);
+    }
+
     @EventHandler
     public void leave(PlayerQuitEvent e) {
-        PlayerManager.getPlayer(e.getPlayer()).stopScoreboard();
+        SBPlayer sb = PlayerManager.getPlayer(e.getPlayer());
+        if (sb != null) {
+            sb.stopScoreboard();
+            PlayerManager.unloadPlayer(sb);
+        }
     }
 
     @EventHandler
     public void changeWorld(PlayerTeleportEvent e) {
-        PlayerManager.getPlayer(e.getPlayer()).reset();
+        SBPlayer sb = PlayerManager.getPlayer(e.getPlayer());
+        if (sb != null) {
+            PlayerManager.getPlayer(e.getPlayer()).reset();
+        }
     }
 }

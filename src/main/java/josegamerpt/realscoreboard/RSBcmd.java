@@ -82,7 +82,7 @@ public class RSBcmd implements CommandExecutor {
                 }
             }
         } else {
-            System.out.print("Only players can execute this command.");
+            RealScoreboard.log("Only players can execute this command.");
         }
         return false;
     }
@@ -106,7 +106,7 @@ public class RSBcmd implements CommandExecutor {
 
     protected void processReload(Player p) {
         Config.reload();
-
+        PlayerManager.players.forEach(sbPlayer -> sbPlayer.reset());
         p.sendMessage(Text.addColor(RealScoreboard.getPrefix() + "&fConfig &areloaded."));
     }
 
