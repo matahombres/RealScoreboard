@@ -53,8 +53,7 @@ public class RealScoreboard extends JavaPlugin {
     }
 
     public static String getServerVersion() {
-        String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-        return version;
+        return Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
     }
 
     public void onEnable() {
@@ -135,9 +134,6 @@ public class RealScoreboard extends JavaPlugin {
                 nms = new NMS1_13_R2();
                 break;
             case "v1_14_R1":
-                log(compatible);
-                nms = new NMS1_14_R1();
-                break;
             case "v1_14_R2":
                 log(compatible);
                 nms = new NMS1_14_R1();
@@ -166,7 +162,7 @@ public class RealScoreboard extends JavaPlugin {
         if (rsp == null) {
             return false;
         }
-        Economia = (Economy) rsp.getProvider();
+        Economia = rsp.getProvider();
         return Economia != null;
     }
 
@@ -174,7 +170,7 @@ public class RealScoreboard extends JavaPlugin {
         RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager()
                 .getRegistration(Permission.class);
         if (permissionProvider != null) {
-            perms = (Permission) permissionProvider.getProvider();
+            perms = permissionProvider.getProvider();
         }
         return perms != null;
     }
@@ -182,7 +178,7 @@ public class RealScoreboard extends JavaPlugin {
     private boolean setupChat() {
         RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(Chat.class);
         if (chatProvider != null) {
-            chat = (Chat) chatProvider.getProvider();
+            chat = chatProvider.getProvider();
         }
         return chat != null;
     }

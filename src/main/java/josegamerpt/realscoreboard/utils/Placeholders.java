@@ -13,7 +13,7 @@ import josegamerpt.realscoreboard.RealScoreboard;
 
 public class Placeholders {
     private static int ping(Player player) {
-        return RealScoreboard.nms.pegarPing(player);
+        return RealScoreboard.nms.getPing(player);
     }
 
     private static String ram() {
@@ -120,7 +120,12 @@ public class Placeholders {
         double kills = p.getStatistic(Statistic.PLAYER_KILLS);
         double deaths = p.getStatistic(Statistic.DEATHS);
         String send = (kills / deaths + "");
-        return send.substring(0, send.indexOf("."));
+
+        if (send.contains(".")) {
+            return send.substring(0, send.indexOf("."));
+        } else {
+            return send;
+        }
     }
 
     private static String placeholderAPI(Player p, String s) {
@@ -131,22 +136,26 @@ public class Placeholders {
     }
 
     public static String setPlaceHolders(Player p, String s) {
-        String placeholders = s.replaceAll("&", "§").replaceAll("%playername%", p.getName())
-                .replace("%loc%", cords(p)).replace("%rainbow%", Text.getRainbow()).replace("%time%", time())
-                .replace("%day%", day()).replace("%serverip%", serverIP()).replace("%version%", getVersion())
-                .replace("%ping%", ping(p) + " ms").replace("%ram%", ram())
-                .replace("%jumps%", "" + stats(p, Statistic.JUMP)).replace("%mobkills%", "" + stats(p, Statistic.MOB_KILLS))
-                .replace("%world%", getWorldName(p)).replace("%port%", String.valueOf(port()))
-                .replace("%maxplayers%", String.valueOf(maxPlayers()))
-                .replace("%online%", String.valueOf(onlinePlayers()))
-                .replace("%prefix%", prefix(p))
-                .replace("%suffix%", sufix(p)).replace("%yaw%", String.valueOf(p.getLocation().getYaw()))
-                .replace("%kills%", String.valueOf(stats(p, Statistic.PLAYER_KILLS))).replace("%deaths%", String.valueOf(stats(p, Statistic.DEATHS)))
-                .replace("%kd%", getKD(p))
-                .replace("%pitch%", String.valueOf(p.getLocation().getPitch())).replace("%group%", getGroup(p))
-                .replace("%money%", money(p))
-                .replace("%displayname%", p.getDisplayName());
-        return placeholderAPI(p, placeholders);
 
+        try {
+            String placeholders = s.replaceAll("&", "§").replaceAll("%playername%", p.getName())
+                    .replace("%loc%", cords(p)).replace("%rainbow%", Text.getRainbow()).replace("%time%", time())
+                    .replace("%day%", day()).replace("%serverip%", serverIP()).replace("%version%", getVersion())
+                    .replace("%ping%", ping(p) + " ms").replace("%ram%", ram())
+                    .replace("%jumps%", "" + stats(p, Statistic.JUMP)).replace("%mobkills%", "" + stats(p, Statistic.MOB_KILLS))
+                    .replace("%world%", getWorldName(p)).replace("%port%", String.valueOf(port()))
+                    .replace("%maxplayers%", String.valueOf(maxPlayers()))
+                    .replace("%online%", String.valueOf(onlinePlayers()))
+                    .replace("%prefix%", prefix(p))
+                    .replace("%suffix%", sufix(p)).replace("%yaw%", String.valueOf(p.getLocation().getYaw()))
+                    .replace("%kills%", String.valueOf(stats(p, Statistic.PLAYER_KILLS))).replace("%deaths%", String.valueOf(stats(p, Statistic.DEATHS)))
+                    .replace("%kd%", getKD(p))
+                    .replace("%pitch%", String.valueOf(p.getLocation().getPitch())).replace("%group%", getGroup(p))
+                    .replace("%money%", money(p))
+                    .replace("%displayname%", p.getDisplayName());
+            return placeholderAPI(p, placeholders);
+        } catch (Exception ignored) {
+        }
+        return "RealScoreboard";
     }
 }

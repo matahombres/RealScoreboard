@@ -1,7 +1,6 @@
 package josegamerpt.realscoreboard.player;
 
 
-import it.unimi.dsi.fastutil.Hash;
 import josegamerpt.realscoreboard.Enum;
 import josegamerpt.realscoreboard.RealScoreboard;
 import josegamerpt.realscoreboard.config.Config;
@@ -47,7 +46,7 @@ public class SBPlayer {
 
         br = new BukkitRunnable() {
             public void run() {
-                if (toggle == false) {
+                if (!toggle) {
                     if (Config.file().getStringList("Config.Disabled-Worlds").contains(p.getWorld().getName())) {
                         p.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
                         return;
@@ -85,12 +84,12 @@ public class SBPlayer {
                     p.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
                 }
             }
-        }.runTaskTimer(RealScoreboard.pl, 0L, (long) Data.getInt(Enum.DataInt.ANIMATIONS_REFRESH_DELAY));
+        }.runTaskTimer(RealScoreboard.pl, 0L, Data.getInt(Enum.DataInt.ANIMATIONS_REFRESH_DELAY));
 
     }
 
     public void toggleScoreboard() {
-        if (this.toggle == true) {
+        if (this.toggle) {
             this.toggle = false;
             startScoreboard();
             p.sendMessage(Text.addColor(RealScoreboard.getPrefix() + "&fScoreboard turned &aon."));
