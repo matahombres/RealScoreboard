@@ -1,15 +1,14 @@
 package josegamerpt.realscoreboard.utils;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import josegamerpt.realscoreboard.RealScoreboard;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 
-import josegamerpt.realscoreboard.RealScoreboard;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Placeholders {
     private static int ping(Player player) {
@@ -65,13 +64,28 @@ public class Placeholders {
 
     private static String getGroup(Player p) {
         if (RealScoreboard.vault == 0) {
-            return "Vault Not-Found";
+            return "Missing Vault";
         }
         String w = RealScoreboard.perms.getPrimaryGroup(p);
         if (w == null) {
-            return "null";
+            return "None";
         }
         return Text.addColor(w);
+    }
+
+    private static String prefix(Player p) {
+        if (RealScoreboard.vault == 0) {
+            return "Missing Vault";
+        }
+        String grupo = RealScoreboard.chat.getPrimaryGroup(p);
+        String prefix = RealScoreboard.chat.getGroupPrefix(p.getWorld(), grupo);
+        if (grupo == null) {
+            return "None";
+        }
+        if (prefix == null) {
+            return "None";
+        }
+        return Text.addColor(prefix);
     }
 
     private static String sufix(Player p) {
@@ -79,37 +93,21 @@ public class Placeholders {
             return "Vault Not-Found";
         }
         String grupo = RealScoreboard.chat.getPrimaryGroup(p);
-        String prefix = RealScoreboard.chat.getGroupPrefix(p.getWorld(), grupo);
-        if (grupo == null) {
-            return "null";
-        }
-        if (prefix == null) {
-            return "null";
-        }
-        return Text.addColor(prefix);
-    }
-
-    private static String prefix(Player p) {
-        if (RealScoreboard.vault == 0) {
-            return "Vault Not-Found";
-        }
-        String grupo = RealScoreboard.chat.getPrimaryGroup(p);
         String suffix = RealScoreboard.chat.getGroupSuffix(p.getWorld(), grupo);
         if (grupo == null) {
-            return "null";
+            return "None";
         }
         if (suffix == null) {
-            return "null";
+            return "None";
         }
         return Text.addColor(suffix);
     }
 
-    private static String money(Player p) {
+    private static double money(Player p) {
         if (RealScoreboard.vault == 0) {
-            return "0";
+            return 0D;
         }
-        String kept = String.valueOf(RealScoreboard.Economia.getBalance(p));
-        return kept.substring(0, kept.indexOf("."));
+        return RealScoreboard.Economia.getBalance(p);
     }
 
     private static int stats(Player p, Statistic s) {
@@ -136,23 +134,31 @@ public class Placeholders {
     }
 
     public static String setPlaceHolders(Player p, String s) {
-
         try {
             String placeholders = s.replaceAll("&", "§").replaceAll("%playername%", p.getName())
-                    .replace("%loc%", cords(p)).replace("%rainbow%", Text.getRainbow()).replace("%time%", time())
-                    .replace("%day%", day()).replace("%serverip%", serverIP()).replace("%version%", getVersion())
-                    .replace("%ping%", ping(p) + " ms").replace("%ram%", ram())
-                    .replace("%jumps%", "" + stats(p, Statistic.JUMP)).replace("%mobkills%", "" + stats(p, Statistic.MOB_KILLS))
-                    .replace("%world%", getWorldName(p)).replace("%port%", String.valueOf(port()))
-                    .replace("%maxplayers%", String.valueOf(maxPlayers()))
-                    .replace("%online%", String.valueOf(onlinePlayers()))
-                    .replace("%prefix%", prefix(p))
-                    .replace("%suffix%", sufix(p)).replace("%yaw%", String.valueOf(p.getLocation().getYaw()))
-                    .replace("%kills%", String.valueOf(stats(p, Statistic.PLAYER_KILLS))).replace("%deaths%", String.valueOf(stats(p, Statistic.DEATHS)))
-                    .replace("%kd%", getKD(p))
-                    .replace("%pitch%", String.valueOf(p.getLocation().getPitch())).replace("%group%", getGroup(p))
-                    .replace("%money%", money(p))
-                    .replace("%displayname%", p.getDisplayName());
+                    .replaceAll("%loc%", cords(p))
+                    .replaceAll("%rainbow%", Text.getRainbow())
+                    .replaceAll("%time%", time())
+                    .replaceAll("%day%", day())
+                    .replaceAll("%serverip%", serverIP())
+                    .replaceAll("%version%", getVersion())
+                    .replaceAll("%ping%", ping(p) + " ms")
+                    .replaceAll("%ram%", ram())
+                    .replaceAll("%jumps%", "" + stats(p, Statistic.JUMP))
+                    .replaceAll("%mobkills%", "" + stats(p, Statistic.MOB_KILLS))
+                    .replaceAll("%world%", getWorldName(p)).replaceAll("%port%", String.valueOf(port()))
+                    .replaceAll("%maxplayers%", String.valueOf(maxPlayers()))
+                    .replaceAll("%online%", String.valueOf(onlinePlayers()))
+                    .replaceAll("%prefix%", prefix(p))
+                    .replaceAll("%suffix%", sufix(p)).replaceAll("%yaw%", String.valueOf(p.getLocation().getYaw()))
+                    .replaceAll("%kills%", String.valueOf(stats(p, Statistic.PLAYER_KILLS)))
+                    .replaceAll("%deaths%", String.valueOf(stats(p, Statistic.DEATHS)))
+                    .replaceAll("%kd%", getKD(p))
+                    .replaceAll("%pitch%", String.valueOf(p.getLocation().getPitch()))
+                    .replaceAll("%group%", getGroup(p))
+                    .replaceAll("%money%", Text.formatMoney(money(p)))
+                    .replaceAll("%displayname%", p.getDisplayName())
+                    .replaceAll("%playtime%", Text.formatTime(stats(p, Statistic.PLAY_ONE_MINUTE) / 20) + "");
             return placeholderAPI(p, placeholders);
         } catch (Exception ignored) {
         }

@@ -1,15 +1,12 @@
 package josegamerpt.realscoreboard;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
-
 import josegamerpt.realscoreboard.config.Config;
 import josegamerpt.realscoreboard.config.ConfigUpdater;
 import josegamerpt.realscoreboard.managers.AnimationManager;
 import josegamerpt.realscoreboard.managers.PlayerManager;
 import josegamerpt.realscoreboard.nms.*;
 import josegamerpt.realscoreboard.utils.TPS;
+import josegamerpt.realscoreboard.utils.Text;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -22,6 +19,10 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Logger;
+
 
 public class RealScoreboard extends JavaPlugin {
     public static NMS nms;
@@ -33,7 +34,6 @@ public class RealScoreboard extends JavaPlugin {
     public static int placeholderapi = 0;
     public static Logger log = Bukkit.getLogger();
     public static Plugin pl;
-    static String prefix = "§bReal§9Scoreboard §7| §r";
     PluginDescriptionFile desc = getDescription();
     PluginManager pm = Bukkit.getPluginManager();
     static String name = "[ RealScoreboard ]";
@@ -41,7 +41,7 @@ public class RealScoreboard extends JavaPlugin {
     String header = "------------------- RealScoreboard -------------------";
 
     public static String getPrefix() {
-        return prefix;
+        return Text.addColor(Config.file().getString("Config.Prefix"));
     }
 
     public static void log(String s) {

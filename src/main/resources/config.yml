@@ -1,4 +1,5 @@
 Config:
+  Prefix: '&bReal&9Scoreboard &7| &r'
   Messages:
     Scoreboard-Toggle:
       'ON': '&fScoreboard turned &aON&f.'
@@ -19,7 +20,7 @@ Config:
         - '%blank%'
         - ' &7Name: #&f%playername%#'
         - ' &7Ping: &f%ping%'
-        - ' &7Money: &f%money%€'
+        - ' &7Money: &f%money%'
         - ' &7Time: &f%time%'
         - ' &7Day: &f%day%'
         - ' &7Location:'
@@ -49,4 +50,4 @@ Config:
         - '%rainbow%&l&m------------------------'
       Title:
         - '&6This is the Third scoreboard.'
-Version: 2
+Version: 3

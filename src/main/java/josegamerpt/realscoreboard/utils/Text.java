@@ -1,10 +1,11 @@
 package josegamerpt.realscoreboard.utils;
 
+import org.bukkit.ChatColor;
+
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
-import org.bukkit.ChatColor;
 
 public class Text {
 	private static int i = 1;
@@ -43,6 +44,29 @@ public class Text {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	private static String[] money = {"c", "k", "m", "b", "t", "q", "qi", "s", "sep", "OC", "N", "DEC", "UN", "DUO", "TRE"};
+	private static String[] time = {"s", "m", "h", "h", "h", "h", "h", "h", "h"};
+
+	public static String formatMoney(double value) {
+		int index = 0;
+		while (value / 1000.0D >= 1.0D) {
+			value /= 1000.0D;
+			index++;
+		}
+		DecimalFormat decimalFormat = new DecimalFormat("#.##");
+		return String.format("%s%s", new Object[]{decimalFormat.format(value), money[index]});
+	}
+
+	public static String formatTime(int value) {
+		int index = 0;
+		while (value / 1000 >= 1) {
+			value /= 1000;
+			index++;
+		}
+		DecimalFormat decimalFormat = new DecimalFormat("#.##");
+		return String.format("%s%s", new Object[]{decimalFormat.format(value), time[index]});
 	}
 
 	public static String randomColor() {

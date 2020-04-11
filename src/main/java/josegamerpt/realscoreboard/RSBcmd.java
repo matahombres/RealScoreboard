@@ -1,19 +1,17 @@
 package josegamerpt.realscoreboard;
 
-import java.util.Arrays;
-import java.util.List;
-
 import josegamerpt.realscoreboard.config.Config;
 import josegamerpt.realscoreboard.config.Data;
 import josegamerpt.realscoreboard.managers.PlayerManager;
 import josegamerpt.realscoreboard.player.SBPlayer;
+import josegamerpt.realscoreboard.utils.Text;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
 
-import josegamerpt.realscoreboard.utils.Text;
+import java.util.Arrays;
+import java.util.List;
 
 public class RSBcmd implements CommandExecutor {
 
@@ -31,25 +29,29 @@ public class RSBcmd implements CommandExecutor {
                         p.sendMessage(nop);
                     }
                 } else if (args.length == 1) {
-                    if (args[0].equals("reload")) {
-                        if (p.hasPermission("RealScoreboard.Reload")) {
-                            processReload(p);
+                    switch (args[0]) {
+                        case "reload":
+                            if (p.hasPermission("RealScoreboard.Reload")) {
+                                processReload(p);
+                                return false;
+                            } else {
+                                p.sendMessage(nop);
+                            }
+                            break;
+                        case "config":
+                            if (p.hasPermission("RealScoreboard.Config")) {
+                                printConfigHelp(p);
+                            } else {
+                                p.sendMessage(nop);
+                            }
                             return false;
-                        } else {
-                            p.sendMessage(nop);
-                        }
-                    } else if (args[0].equals("config")) {
-                        if (p.hasPermission("RealScoreboard.Config")) {
-                            printConfigHelp(p);
-                        } else {
-                            p.sendMessage(nop);
-                        }
-                        return false;
-                    } else if (args[0].equals("toggle")) {
-                        SBPlayer s = PlayerManager.getPlayer(p);
-                        s.toggleScoreboard();
-                    } else {
-                        p.sendMessage(notfound);
+                        case "toggle":
+                            SBPlayer s = PlayerManager.getPlayer(p);
+                            s.toggleScoreboard();
+                            break;
+                        default:
+                            p.sendMessage(notfound);
+                            break;
                     }
                 } else if (args.length == 2) {
                     if (args[0].equals("config")) {
@@ -60,6 +62,7 @@ public class RSBcmd implements CommandExecutor {
                                 p.sendMessage(nop);
                             }
                         }
+                    }
                     } else if (args.length == 3) {
                         if ((args[0].equals("config")) && (args[1].equals("show"))) {
                             if (p.hasPermission("RealScoreboard.Config")) {
@@ -79,7 +82,7 @@ public class RSBcmd implements CommandExecutor {
                     } else {
                         p.sendMessage(nop);
                     }
-                }
+
             }
         } else {
             RealScoreboard.log("Only players can execute this command.");
@@ -106,15 +109,14 @@ public class RSBcmd implements CommandExecutor {
 
     protected void processReload(Player p) {
         Config.reload();
-        PlayerManager.players.forEach(sbPlayer -> sbPlayer.reset());
-        p.sendMessage(Text.addColor(RealScoreboard.getPrefix() + "&fConfig &areloaded."));
+        PlayerManager.players.forEach(SBPlayer::reset);
+        p.sendMessage(Text.addColor(RealScoreboard.getPrefix() + Config.file().getString("Config.Reloaded")));
     }
 
     protected void processConfigShow1(Player p) {
         p.sendMessage(Text.addColor("&7&m----------&r &aConfig &7&m----------"));
         p.sendMessage(Text.addColor("&9Disabled Worlds:"));
         List<String> l = Data.getList(Enum.DataList.CONFIG_DISABLED_WORLDS);
-        ;
         for (String s : l) {
             p.sendMessage(Text.addColor(" &8- &b" + s));
         }
