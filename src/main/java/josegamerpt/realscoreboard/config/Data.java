@@ -31,11 +31,7 @@ public class Data {
     }
 
     public static String getString(Enum.DataString di, boolean prefix) {
-        if (prefix) {
-            return RealScoreboard.getPrefix() + getString(di);
-        } else {
-            return getString(di);
-        }
+        return prefix ? RealScoreboard.getPrefix() + getString(di) : getString(di);
     }
 
     private static String getString(Enum.DataString di) {
@@ -50,30 +46,18 @@ public class Data {
     }
 
     public static List<String> getList(Enum.DataList ds) {
-        switch (ds) {
-            case CONFIG_DISABLED_WORLDS:
-                return Config.file().getStringList("Config.Disabled-Worlds");
-            default:
-                throw new IllegalArgumentException("DataList isnt configured: " + ds.name());
+        if (ds == Enum.DataList.CONFIG_DISABLED_WORLDS) {
+            return Config.file().getStringList("Config.Disabled-Worlds");
         }
+        throw new IllegalArgumentException("DataList isnt configured: " + ds.name());
     }
 
-    public static ArrayList<String> getRegisteredWorlds() {
-        ArrayList<String> worlds = new ArrayList<String>();
-        ConfigurationSection cs = Config.file().getConfigurationSection("Config.Scoreboard");
-        Set<String> keys = cs.getKeys(false);
-        for (Iterator<String> iterator1 = keys.iterator(); iterator1.hasNext(); ) {
-            worlds.add(iterator1.next());
-        }
-        return worlds;
+    public static ArrayList<String> getRegisteredWorlds () {
+        return new ArrayList<>(Config.file().getConfigurationSection("Config.Scoreboard").getKeys(false));
     }
 
-    public static String getCorrectPlace(Player p) {
-        if (checkSystem(p) == true) {
-            return p.getLocation().getWorld().getName();
-        } else {
-            return Data.getRegisteredWorlds().get(0);
-        }
+    public static String getCorrectPlace (Player p) {
+        return checkSystem(p) ? p.getLocation().getWorld().getName() : Data.getRegisteredWorlds().get(0);
     }
 
 
