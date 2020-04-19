@@ -6,8 +6,7 @@ import josegamerpt.realscoreboard.RealScoreboard;
 import josegamerpt.realscoreboard.config.Config;
 import josegamerpt.realscoreboard.config.Data;
 import josegamerpt.realscoreboard.managers.TitleManager;
-import josegamerpt.realscoreboard.scoreboard.*;
-import josegamerpt.realscoreboard.scoreboard.animate.HighlightedString;
+import josegamerpt.realscoreboard.scoreboard.PlayerScoreboard;
 import josegamerpt.realscoreboard.scoreboard.animate.ScrollableString;
 import josegamerpt.realscoreboard.utils.Placeholders;
 import josegamerpt.realscoreboard.utils.Text;
@@ -17,10 +16,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SBPlayer {
 
@@ -92,11 +89,11 @@ public class SBPlayer {
         if (this.toggle) {
             this.toggle = false;
             startScoreboard();
-            p.sendMessage(Text.addColor(RealScoreboard.getPrefix() + "&fScoreboard turned &aon."));
+            p.sendMessage(Text.addColor(RealScoreboard.getPrefix() + " " + Config.file().getString("Config.Messages.Scoreboard-Toggle.ON")));
         } else {
             this.toggle = true;
             stopScoreboard();
-            p.sendMessage(Text.addColor(RealScoreboard.getPrefix() + "&fScoreboard turned &coff."));
+            p.sendMessage(Text.addColor(RealScoreboard.getPrefix() + " " + Config.file().getString("Config.Messages.Scoreboard-Toggle.OFF")));
         }
     }
 
