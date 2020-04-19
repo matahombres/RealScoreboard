@@ -1,5 +1,6 @@
 Config:
   Prefix: '&bReal&9Scoreboard &7| &r'
+  Reloaded: '&fThe config has been &areloaded&f.'
   Messages:
     Scoreboard-Toggle:
       'ON': '&fScoreboard turned &aON&f.'
