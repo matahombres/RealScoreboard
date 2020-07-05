@@ -7,34 +7,33 @@ Config:
       'OFF': '&fScoreboard turned &cOFF&f.'
   Animations:
     Rainbow-Delay: 10
-    Title-Delay: 2
-    Scroll-Text:
-      Size: 12
-      Space: 2
+    Title-Delay: 20
   Scoreboard-Refresh: 2
   Disabled-Worlds:
-    - ExampleWorld
+    - testWorld
     - ExampleWorld2
   Scoreboard:
-    Lobby:
+    world:
       Lines:
         - '%blank%'
-        - ' &7Name: #&f%playername%#'
-        - ' &7Ping: &f%ping%'
-        - ' &7Money: &f%money%'
-        - ' &7Time: &f%time%'
-        - ' &7Day: &f%day%'
+        - ' &7Name: &f%playername% &8| &f%ping%'
+        - ' &f%day% &8| &f%time%'
+        - ' &7Money: &f%money% &8| &7XP: &f%xp%'
         - ' &7Location:'
-        - ' &f%loc%'
-        - ' &7Stats: #&fKills: %kills% - Deaths: %deaths% - Mob Kills: %mobkills% - Jumps: %jumps%#'
+        - ' &fX %x% Y %y% Z %z%'
+        - ' &7Stats'
+        - '  &fKills: %kills%'
+        - '  Mob Kills: %mobkills%'
+        - '  Deaths: %deaths%'
+        - '  Jumps: %jumps%'
         - '%blank%'
         - ' &7RAM: &f%ram%'
         - ' &7Online: &f%online%&8/&f%maxplayers%'
-        - ' &7News: #&fWelcome to the new &bReal&9Scoreboard&f! Now with scrolling text.   &fIf you like this plugin, give it a &65 star &frating!#'
         - '%blank%'
       Title:
-        - '%rainbow%RealScoreBoard'
-    flat:
+        - '&bRealScoreBoard'
+        - '&aRealScoreBoard'
+    test:
       Lines:
         - '%blank%'
         - ' &7Hello, &f%playername%'

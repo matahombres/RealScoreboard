@@ -21,10 +21,6 @@ public class Data {
                 return Config.file().getInt("Config.Animations.Rainbow-Delay");
             case ANIMATIONS_REFRESH_DELAY:
                 return Config.file().getInt("Config.Scoreboard-Refresh");
-            case SCROLLTEXT_SIZE:
-                return Config.file().getInt("Config.Animations.Scroll-Text.Size");
-            case SCROLLTEXT_SPACE:
-                return Config.file().getInt("Config.Animations.Scroll-Text.Space");
             default:
                 throw new IllegalArgumentException("DataInt isnt configured: " + di.name());
         }

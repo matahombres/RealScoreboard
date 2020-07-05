@@ -19,8 +19,6 @@ public class ConfigUpdater {
                 Config.file().set("Version", 2);
                 Config.file().set("Config.Messages.Scoreboard-Toggle.ON", "&fScoreboard turned &aON&f.");
                 Config.file().set("Config.Messages.Scoreboard-Toggle.OFF", "&fScoreboard turned &cOFF&f.");
-                Config.file().set("Config.Animations.Scroll-Text.Size", 12);
-                Config.file().set("Config.Animations.Scroll-Text.Space", 2);
                 Config.save();
                 RealScoreboard.log("Config file updated to version 2.");
                 break;

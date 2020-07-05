@@ -46,7 +46,7 @@ public class Text {
 		}
 	}
 
-	private static String[] money = {"c", "k", "m", "b", "t", "q", "qi", "s", "sep", "OC", "N", "DEC", "UN", "DUO", "TRE"};
+	private static String[] money = {"", "k", "m", "b", "t", "q", "qi", "s", "sep", "OC", "N", "DEC", "UN", "DUO", "TRE"};
 	private static String[] time = {"s", "m", "h", "h", "h", "h", "h", "h", "h"};
 
 	public static String formatMoney(double value) {
@@ -70,7 +70,7 @@ public class Text {
 	}
 
 	public static String randomColor() {
-		return lista.get(random.nextInt(lista.size() - 1));
+		return addColor(lista.get(random.nextInt(lista.size() - 1)));
 	}
 
 	public static String getRainbow() {

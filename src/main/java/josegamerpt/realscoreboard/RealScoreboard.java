@@ -5,7 +5,7 @@ import josegamerpt.realscoreboard.config.ConfigUpdater;
 import josegamerpt.realscoreboard.managers.AnimationManager;
 import josegamerpt.realscoreboard.managers.PlayerManager;
 import josegamerpt.realscoreboard.nms.*;
-import josegamerpt.realscoreboard.utils.TPS;
+import josegamerpt.realscoreboard.player.SBPlayer;
 import josegamerpt.realscoreboard.utils.Text;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
@@ -22,8 +22,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class RealScoreboard extends JavaPlugin {
@@ -58,7 +56,12 @@ public class RealScoreboard extends JavaPlugin {
         return s.substring(s.lastIndexOf(".") + 1).trim();
     }
 
-    public void onEnable() {
+    public void onDisable() {
+        PlayerManager.players.forEach(SBPlayer::stop);
+        PlayerManager.players.clear();
+    }
+
+        public void onEnable() {
         pl = this;
 
         System.out.print(header);
@@ -90,8 +93,6 @@ public class RealScoreboard extends JavaPlugin {
 
             log("Starting up the Scoreboard.");
             AnimationManager.startAnimations();
-
-            Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new TPS(), 100L, 1L);
 
             for (Player p : Bukkit.getOnlinePlayers()) {
                 PlayerManager.loadPlayer(p);

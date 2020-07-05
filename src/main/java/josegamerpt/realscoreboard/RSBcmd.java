@@ -47,7 +47,7 @@ public class RSBcmd implements CommandExecutor {
                             return false;
                         case "toggle":
                             SBPlayer s = PlayerManager.getPlayer(p);
-                            s.toggleScoreboard();
+                            s.toggle();
                             break;
                         default:
                             p.sendMessage(notfound);
@@ -109,7 +109,6 @@ public class RSBcmd implements CommandExecutor {
 
     protected void processReload(Player p) {
         Config.reload();
-        PlayerManager.players.forEach(SBPlayer::reset);
         p.sendMessage(Text.addColor(RealScoreboard.getPrefix() + Config.file().getString("Config.Reloaded")));
     }
 

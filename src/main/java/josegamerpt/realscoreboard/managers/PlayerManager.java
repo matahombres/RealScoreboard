@@ -1,5 +1,7 @@
 package josegamerpt.realscoreboard.managers;
 
+import josegamerpt.realscoreboard.RealScoreboard;
+import josegamerpt.realscoreboard.config.Config;
 import josegamerpt.realscoreboard.player.SBPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -7,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 
@@ -42,16 +45,27 @@ public class PlayerManager implements Listener {
     public void leave(PlayerQuitEvent e) {
         SBPlayer sb = PlayerManager.getPlayer(e.getPlayer());
         if (sb != null) {
-            sb.stopScoreboard();
             PlayerManager.unloadPlayer(sb);
         }
     }
 
     @EventHandler
     public void changeWorld(PlayerTeleportEvent e) {
-        SBPlayer sb = PlayerManager.getPlayer(e.getPlayer());
-        if (sb != null) {
-            PlayerManager.getPlayer(e.getPlayer()).reset();
-        }
+        new BukkitRunnable()
+        {
+            public void run()
+            {
+                String w = e.getPlayer().getLocation().getWorld().getName();
+                RealScoreboard.log(Config.file().getList("Config.Disabled-Worlds").toString() + w);
+                if (Config.file().getList("Config.Disabled-Worlds").contains(e.getPlayer().getWorld().getName()))
+                {
+                    PlayerManager.getPlayer(e.getPlayer()).stop();
+                } else {
+                    if (Config.file().getBoolean("PlayerData." + e.getPlayer().getName() + ".Scoreboard.Status.ON")) {
+                        PlayerManager.getPlayer(e.getPlayer()).start();
+                    }
+                }
+            }
+        }.runTaskLater(RealScoreboard.pl, 5);
     }
 }

@@ -158,6 +158,10 @@ public class Placeholders {
                     .replaceAll("%group%", getGroup(p))
                     .replaceAll("%money%", Text.formatMoney(money(p)))
                     .replaceAll("%displayname%", p.getDisplayName())
+                    .replaceAll("%xp%", p.getTotalExperience() + "")
+                    .replaceAll("%x%", p.getLocation().getBlockX() + "")
+                    .replaceAll("%y%", p.getLocation().getBlockY() + "")
+                    .replaceAll("%z%", p.getLocation().getBlockZ() + "")
                     .replaceAll("%playtime%", Text.formatTime(stats(p, Statistic.PLAY_ONE_MINUTE) / 20) + "");
             return placeholderAPI(p, placeholders);
         } catch (Exception ignored) {
