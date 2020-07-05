@@ -107,7 +107,7 @@ public class Placeholders {
         if (RealScoreboard.vault == 0) {
             return 0D;
         }
-        return RealScoreboard.Economia.getBalance(p);
+        return RealScoreboard.economia.getBalance(p);
     }
 
     private static int stats(Player p, Statistic s) {

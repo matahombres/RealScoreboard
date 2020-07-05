@@ -1,9 +1,10 @@
 name: RealScoreboard
 description: Lightweight and efficient scoreboard manager.
 author: JoseGamer_PT
-version: ${project.version}
+version: 5-7-2020 Build 1
 main: josegamerpt.realscoreboard.RealScoreboard
 softdepend: [Vault, PlaceholderAPI]
+api-version: 1.16
 
 commands:
   realscoreboard:

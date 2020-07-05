@@ -22,14 +22,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class RealScoreboard extends JavaPlugin {
     public static NMS nms;
     public static Permission perms = null;
-    public static Economy Economia = null;
+    public static Economy economia = null;
     public static Chat chat = null;
-    public static int abcompatible = 0;
     public static int vault = 0;
     public static int placeholderapi = 0;
     public static Logger log = Bukkit.getLogger();
@@ -53,7 +54,8 @@ public class RealScoreboard extends JavaPlugin {
     }
 
     public static String getServerVersion() {
-        return Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+        String s = Bukkit.getServer().getClass().getPackage().getName();
+        return s.substring(s.lastIndexOf(".") + 1).trim();
     }
 
     public void onEnable() {
@@ -62,11 +64,9 @@ public class RealScoreboard extends JavaPlugin {
         System.out.print(header);
 
         log("Checking the server version.");
+        sv = getServerVersion();
         if (setupNMS()) {
-            sv = getServerVersion();
-
             if (Bukkit.getPluginManager().isPluginEnabled("Vault")) {
-                String sv = getServerVersion();
                 vault = 1;
                 setupEconomy();
                 setupPermissions();
@@ -115,20 +115,8 @@ public class RealScoreboard extends JavaPlugin {
     }
 
     private boolean setupNMS() {
-        String versao;
-
-        try {
-            versao = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-        } catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
-            return false;
-        }
-
         String compatible = "Your server is compatible with RealScoreboard!";
-        switch (versao) {
-            case "v1_13_R1":
-                log(compatible);
-                nms = new NMS1_13_R1();
-                break;
+        switch (sv) {
             case "v1_13_R2":
                 log(compatible);
                 nms = new NMS1_13_R2();
@@ -141,6 +129,10 @@ public class RealScoreboard extends JavaPlugin {
             case "v1_15_R1":
                 log(compatible);
                 nms = new NMS1_15_R1();
+                break;
+            case "v1_16_R1":
+                log(compatible);
+                nms = new NMS1_16_R1();
                 break;
             default:
                 //not compatible
@@ -162,8 +154,8 @@ public class RealScoreboard extends JavaPlugin {
         if (rsp == null) {
             return false;
         }
-        Economia = rsp.getProvider();
-        return Economia != null;
+        economia = rsp.getProvider();
+        return economia != null;
     }
 
     private boolean setupPermissions() {
