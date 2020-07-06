@@ -8,7 +8,7 @@ Config:
   Animations:
     Rainbow-Delay: 10
     Title-Delay: 20
-  Scoreboard-Refresh: 2
+  Scoreboard-Refresh: 10
   Disabled-Worlds:
     - testWorld
     - ExampleWorld2
